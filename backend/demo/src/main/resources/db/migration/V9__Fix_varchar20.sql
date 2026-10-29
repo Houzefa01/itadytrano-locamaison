@@ -1,0 +1,2 @@
+ALTER TABLE public.reservations 
+ADD COLUMN IF NOT EXISTS type_reservation VARCHAR(255) DEFAULT 'VISITE' NOT NULL;

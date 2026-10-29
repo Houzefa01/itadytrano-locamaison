@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LocaMaison">
+  <rect width="64" height="64" rx="16" fill="#5B34D6"/>
+  <path d="M32 13 13 31h5.2v20h11V39h5.6v12h11V31H51z" fill="#fff"/>
+  <circle cx="46" cy="20" r="4" fill="#F59E0B"/>
+</svg>

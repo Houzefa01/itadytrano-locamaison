@@ -1,0 +1,51 @@
+# ItadyTrano — orchestration complète (base + API + interface)
+# Usage : docker compose up -d --build
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-itadytrano}
+      POSTGRES_USER: ${DB_USER:-itadyuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password123}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-itadyuser} -d ${DB_NAME:-itadytrano}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  api:
+    build: ./backend/demo
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/${DB_NAME:-itadytrano}
+      DB_USERNAME: ${DB_USER:-itadyuser}
+      DB_PASSWORD: ${DB_PASSWORD:-password123}
+      # SECRETS — à fournir via un fichier .env (non versionné) en production
+      JWT_SECRET: ${JWT_SECRET:?Définir JWT_SECRET (>= 32 octets) dans .env}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      ORANGE_CLIENT_ID: ${ORANGE_CLIENT_ID:-}
+      ORANGE_CLIENT_SECRET: ${ORANGE_CLIENT_SECRET:-}
+      ORANGE_SENDER_NUMBER: ${ORANGE_SENDER_NUMBER:-}
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - uploads-data:/data/uploads
+    restart: unless-stopped
+
+  web:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "${WEB_PORT:-8088}:80"
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  uploads-data:

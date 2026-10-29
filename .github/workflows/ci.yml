@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    name: Backend (build + tests)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: itadytrano
+          POSTGRES_USER: itadyuser
+          POSTGRES_PASSWORD: password123
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U itadyuser -d itadytrano"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - name: Build & test
+        working-directory: backend/demo
+        env:
+          DB_URL: jdbc:postgresql://localhost:5432/itadytrano
+          DB_USERNAME: itadyuser
+          DB_PASSWORD: password123
+          JWT_SECRET: ci-test-secret-key-please-change-in-prod-0123456789
+        run: ./gradlew --no-daemon build
+
+  frontend:
+    name: Frontend (build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install & build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build

@@ -1,0 +1,3 @@
+Client ID: lbFiSQ6L5ToUEl2XJTq2Kpw6AmvZzEZa
+Client Secret: 6SFNUTsZyUkddGZSem2Ejbd7RHUjEwoIAnVxOyCV7TwS
+Authorization header : Basic bGJGaVNRNkw1VG9VRWwyWEpUcTJLcHc2QW12WnpFWmE6NlNGTlVUc1p5VWtkZEdaU2VtMkVqYmQ3UkhVakV3b0lBblZ4T3lDVjdUd1M=

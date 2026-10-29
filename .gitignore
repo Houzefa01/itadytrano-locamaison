@@ -1,0 +1,33 @@
+# ---- Secrets / configuration locale ----
+.env
+*.env
+application-local.properties
+*-local.properties
+
+# ---- Backend (Gradle / Spring Boot) ----
+backend/demo/.gradle/
+backend/demo/build/
+backend/demo/bin/
+backend/demo/out/
+HELP.md
+
+# Fichiers uploadés à l'exécution (données utilisateur, ne pas versionner)
+backend/demo/src/main/resources/static/uploads/
+
+# ---- Frontend (Angular / Node) ----
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.nx/
+npm-debug.log
+yarn-error.log
+
+# ---- OS / IDE ----
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
+.vscode/
+
+# Fichiers uploadés (répertoire externe, ne pas versionner)
+backend/demo/uploads/
